@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Personal Link - Cyberpunk Pro</title>
 
+/* FAVICON */
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1055/1055687.png">
+
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -48,18 +51,34 @@ canvas{
     z-index:-1;
 }
 
-/* GLASS CONTAINER */
+/* GLASS CONTAINER */    
 .container{
     width:90%;
     max-width:400px;
-    padding:30px 20px;
-    border-radius:20px;
-    backdrop-filter:blur(15px);
-    background:rgba(255,255,255,0.08);
-    border:1px solid rgba(255,255,255,0.2);
-    box-shadow:0 0 40px rgba(0,0,0,0.4);
+    padding:35px 25px;
+    border-radius:25px;
+    backdrop-filter:blur(18px);
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.15);
+    box-shadow:0 0 60px rgba(0,0,0,0.6);
     text-align:center;
+    transition:0.4s;
 }
+.container::before{
+content:"";
+position:absolute;
+inset:-2px;
+border-radius:25px;
+background:linear-gradient(45deg,#00f5ff,#ff00ff,#00f5ff);
+z-index:-1;
+animation:rgb 6s linear infinite;
+}
+
+@keyframes rgb{
+    0%{filter:hue-rotate(0deg);}
+    100%{filter:hue-rotate(360deg);}
+}
+
 
 /* PROFILE */
 .profile-img{
@@ -95,13 +114,13 @@ h1{
     margin:10px 0;
     border-radius:12px;
     border:1px solid #00f5ff;
-    transition:0.3s;
+    transition:all 0.3s ease-in-out;
     backdrop-filter:blur(5px);
 }
 
 .links a:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 15px #00f5ff;
+    transform:translateY(-4px) scale(1.05);
+    box-shadow:0 0 20px #00f5ff;
 }
 
 /* TOGGLE BUTTON */
@@ -132,7 +151,7 @@ h1{
 <div class="container">
     <img src="https://i.pravatar.cc/300" class="profile-img">
     <h1>@tr0y.pnzzzzz</h1>
-    <p class="bio">RPL Student | Football Enjoyer | Cyberpunk Vibes ⚡</p>
+    <p class="bio"><span id="typing"></span></p>
 
     <div class="links">
         <a href="https://www.instagram.com/tr0y.pnzzzzz/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
@@ -148,6 +167,11 @@ h1{
 
 <script>
 /* DARK LIGHT TOGGLE */
+if(localStorage.getItem("mode") === "light"){
+    document.body.classList.remove("dark");
+    document.body.classList.add("light");
+}
+    
 function toggleMode(){
     const body = document.body;
     const icon = document.querySelector(".toggle-btn i");
@@ -155,14 +179,17 @@ function toggleMode(){
     body.classList.toggle("dark");
     body.classList.toggle("light");
 
-    if(body.classList.contains("dark")){
-        icon.classList.remove("fa-sun");
-        icon.classList.add("fa-moon");
-    } else {
+     if(body.classList.contains("light")){
+        localStorage.setItem("mode","light");
         icon.classList.remove("fa-moon");
         icon.classList.add("fa-sun");
+    } else {
+        localStorage.setItem("mode","dark");
+        icon.classList.remove("fa-sun");
+        icon.classList.add("fa-moon");
     }
 }
+
 
 /* SIMPLE PARTICLE SYSTEM */
 const canvas = document.getElementById("particles");
@@ -208,6 +235,20 @@ window.addEventListener("resize",()=>{
     canvas.width=window.innerWidth;
     canvas.height=window.innerHeight;
 });
+
+/* SCRIPT JS */
+    const text = "RPL Student | Real Madrid Fan | Cyberpunk Vibes ⚡";
+let i = 0;
+
+function typeEffect(){
+    if(i < text.length){
+        document.getElementById("typing").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeEffect,50);
+    }
+}
+
+typeEffect();
 </script>
 
 </body>
