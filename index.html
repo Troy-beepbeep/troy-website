@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Link - Cyberpunk Pro</title>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    transition:0.4s;
+    overflow:hidden;
+}
+
+/* DARK MODE DEFAULT */
+body.dark{
+    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    color:white;
+}
+
+/* LIGHT MODE */
+body.light{
+    background:linear-gradient(135deg,#e0eafc,#cfdef3);
+    color:#111;
+}
+
+/* PARTICLE CANVAS */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+
+/* GLASS CONTAINER */
+.container{
+    width:90%;
+    max-width:400px;
+    padding:30px 20px;
+    border-radius:20px;
+    backdrop-filter:blur(15px);
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.2);
+    box-shadow:0 0 40px rgba(0,0,0,0.4);
+    text-align:center;
+}
+
+/* PROFILE */
+.profile-img{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid #00f5ff;
+    box-shadow:0 0 20px #00f5ff;
+    margin-bottom:15px;
+}
+
+h1{
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.bio{
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+/* LINKS */
+.links a{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    text-decoration:none;
+    color:inherit;
+    padding:12px;
+    margin:10px 0;
+    border-radius:12px;
+    border:1px solid #00f5ff;
+    transition:0.3s;
+    backdrop-filter:blur(5px);
+}
+
+.links a:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 15px #00f5ff;
+}
+
+/* TOGGLE BUTTON */
+.toggle-btn{
+    position:absolute;
+    top:20px;
+    right:20px;
+    cursor:pointer;
+    font-size:20px;
+}
+
+.footer{
+    margin-top:20px;
+    font-size:12px;
+    opacity:0.6;
+}
+</style>
+</head>
+
+<body class="dark">
+
+<canvas id="particles"></canvas>
+
+<div class="toggle-btn" onclick="toggleMode()">
+    <i class="fas fa-moon"></i>
+</div>
+
+<div class="container">
+    <img src="https://i.pravatar.cc/300" class="profile-img">
+    <h1>@tr0y.pnzzzzz</h1>
+    <p class="bio">RPL Student | Football Enjoyer | Cyberpunk Vibes ⚡</p>
+
+    <div class="links">
+        <a href="https://www.instagram.com/tr0y.pnzzzzz/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+        <a href="https://github.com/Troy-beepbeep" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        <a href="https://www.youtube.com/@idki303" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+        <a href="mailto:troymarceloj@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+    </div>
+
+    <div class="footer">
+        © 2026 Personal Link
+    </div>
+</div>
+
+<script>
+/* DARK LIGHT TOGGLE */
+function toggleMode(){
+    const body = document.body;
+    const icon = document.querySelector(".toggle-btn i");
+
+    body.classList.toggle("dark");
+    body.classList.toggle("light");
+
+    if(body.classList.contains("dark")){
+        icon.classList.remove("fa-sun");
+        icon.classList.add("fa-moon");
+    } else {
+        icon.classList.remove("fa-moon");
+        icon.classList.add("fa-sun");
+    }
+}
+
+/* SIMPLE PARTICLE SYSTEM */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for(let i=0;i<80;i++){
+    particles.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        radius:Math.random()*2,
+        dx:(Math.random()-0.5),
+        dy:(Math.random()-0.5)
+    });
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    particles.forEach(p=>{
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+        ctx.fillStyle="rgba(0,255,255,0.7)";
+        ctx.fill();
+
+        p.x+=p.dx;
+        p.y+=p.dy;
+
+        if(p.x<0||p.x>canvas.width) p.dx*=-1;
+        if(p.y<0||p.y>canvas.height) p.dy*=-1;
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+window.addEventListener("resize",()=>{
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+});
+</script>
+
+</body>
+</html>
