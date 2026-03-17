@@ -1,254 +1,263 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Personal Link - Cyberpunk Pro</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Link - Cyberpunk Pro</title>  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1055/1055687.png">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">  <style>
+    :root{
+      --glass-bg: rgba(255,255,255,0.06);
+      --accent: #00f5ff;
+      --accent-2: #ff00ff;
+      --radius: 18px;
+      --max-width: 920px;
+    }
 
-<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1055/1055687.png">
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Poppins',sans-serif;
+      background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      transition:background .35s ease;
+    }
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    /* container */
+    .card{
+      width:100%;
+      max-width:var(--max-width);
+      background:var(--glass-bg);
+      border-radius:calc(var(--radius) + 7px);
+      padding:28px;
+      position:relative;
+      box-shadow:0 8px 40px rgba(0,0,0,0.6);
+      backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,0.06);
+      overflow:hidden;
+    }
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    /* animated rainbow border */
+    .card::before{
+      content:'';
+      position:absolute;
+      inset:-2px;
+      border-radius:calc(var(--radius) + 7px);
+      background:linear-gradient(45deg,var(--accent),var(--accent-2),var(--accent));
+      z-index:-1;
+      animation:spinHue 6s linear infinite;
+      filter:blur(12px);
+    }
+    @keyframes spinHue{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
+    .top{
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
 
-body{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    transition:0.4s;
-    overflow:hidden;
-}
+    .profile-img{
+      width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid var(--accent);
+      box-shadow:0 6px 20px rgba(0,0,0,0.6);
+    }
 
-/* DARK MODE DEFAULT */
-body.dark{
-    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-    color:white;
-}
+    .meta h1{font-size:20px;margin:0 0 6px 0}
+    .meta p{margin:0;color:rgba(255,255,255,0.85)}
 
-/* LIGHT MODE */
-body.light{
-    background:linear-gradient(135deg,#e0eafc,#cfdef3);
-    color:#111;
-}
+    .typing{font-weight:500;margin-top:8px;color:rgba(255,255,255,0.9)}
 
-/* PARTICLE CANVAS */
-canvas{
-    position:fixed;
-    top:0;
-    left:0;
-    z-index:-1;
-}
+    /* links */
+    .links{display:flex;flex-direction:column;margin-top:18px;gap:10px}
+    .link{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.06);background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);transition:transform .18s ease,box-shadow .18s}
+    .link:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(0,0,0,0.5)}
 
-/* GLASS CONTAINER */    
-.container{
-    width:90%;
-    max-width:400px;
-    padding:35px 25px;
-    border-radius:25px;
-    backdrop-filter:blur(18px);
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.15);
-    box-shadow:0 0 60px rgba(0,0,0,0.6);
-    text-align:center;
-    transition:0.4s;
-}
-.container::before{
-content:"";
-position:absolute;
-inset:-2px;
-border-radius:25px;
-background:linear-gradient(45deg,#00f5ff,#ff00ff,#00f5ff);
-z-index:-1;
-animation:rgb 6s linear infinite;
-}
+    .actions{display:flex;gap:12px;margin-top:16px}
+    .btn{padding:10px 14px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.08);cursor:pointer}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#111;border:0}
 
-@keyframes rgb{
-    0%{filter:hue-rotate(0deg);}
-    100%{filter:hue-rotate(360deg);}
-}
+    /* footer */
+    .footer{margin-top:18px;font-size:12px;opacity:0.7}
 
+    /* PORTFOLIO MODAL */
+    .modal{
+      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:18px;z-index:9999;visibility:hidden;opacity:0;transition:opacity .2s ease,visibility .2s;
+    }
+    .modal.open{visibility:visible;opacity:1}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(6,6,10,0.7);backdrop-filter:blur(6px)}
+    .modal-panel{position:relative;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:14px;padding:20px;max-width:980px;width:100%;max-height:86vh;overflow:auto;border:1px solid rgba(255,255,255,0.06)}
 
-/* PROFILE */
-.profile-img{
-    width:120px;
-    height:120px;
-    border-radius:50%;
-    object-fit:cover;
-    border:3px solid #00f5ff;
-    box-shadow:0 0 20px #00f5ff;
-    margin-bottom:15px;
-}
+    .projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .project{background:rgba(0,0,0,0.25);padding:12px;border-radius:10px;display:flex;flex-direction:column;gap:8px}
+    .project img{width:100%;height:120px;object-fit:cover;border-radius:8px}
+    .project h3{margin:0;font-size:14px}
+    .project p{margin:0;font-size:13px;color:rgba(255,255,255,0.8)}
+    .tags{display:flex;gap:6px;flex-wrap:wrap}
+    .tag{padding:6px 8px;border-radius:999px;font-size:12px;background:rgba(255,255,255,0.04)}
+    .project-actions{display:flex;gap:8px;margin-top:auto}
 
-h1{
-    font-size:22px;
-    font-weight:700;
-    margin-bottom:5px;
-}
+    /* responsive */
+    @media (max-width:900px){
+      .projects-grid{grid-template-columns:repeat(2,1fr)}
+      :root{--max-width:720px}
+    }
+    @media (max-width:560px){
+      .top{flex-direction:row;gap:12px}
+      .projects-grid{grid-template-columns:1fr}
+      :root{--max-width:420px}
+    }
 
-.bio{
-    font-size:14px;
-    margin-bottom:25px;
-}
+    /* reduce motion */
+    @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* LINKS */
-.links a{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    text-decoration:none;
-    color:inherit;
-    padding:12px;
-    margin:10px 0;
-    border-radius:12px;
-    border:1px solid #00f5ff;
-    transition:all 0.3s ease-in-out;
-    backdrop-filter:blur(5px);
-}
-
-.links a:hover{
-    transform:translateY(-4px) scale(1.05);
-    box-shadow:0 0 20px #00f5ff;
-}
-
-/* TOGGLE BUTTON */
-.toggle-btn{
-    position:absolute;
-    top:20px;
-    right:20px;
-    cursor:pointer;
-    font-size:20px;
-}
-
-.footer{
-    margin-top:20px;
-    font-size:12px;
-    opacity:0.6;
-}
-</style>
-</head>
-
-<body class="dark">
-
-<canvas id="particles"></canvas>
-
-<div class="toggle-btn" onclick="toggleMode()">
-    <i class="fas fa-moon"></i>
+    /* particle canvas sits behind everything */
+    #particles{position:fixed;inset:0;z-index:-2}
+  </style></head>
+<body>
+  <canvas id="particles"></canvas>  <div class="card" role="main">
+    <div class="top">
+      <img class="profile-img" src="https://i.pravatar.cc/400?u=tr0y.pnzzzzz" alt="Foto profil" loading="lazy">
+      <div class="meta">
+        <h1>@tr0y.pnzzzzz</h1>
+        <div class="typing" id="typing">RPL Student | Real Madrid Fan | Cyberpunk Vibes ⚡</div>
+        <div class="actions">
+          <button class="btn" id="copyEmail"><i class="fas fa-envelope"></i> Copy Email</button>
+          <button class="btn primary" id="openPortfolio"><i class="fas fa-briefcase"></i> Portfolio</button>
+        </div>
+      </div>
+    </div><div class="links" aria-label="Links utama">
+  <a class="link" href="https://www.instagram.com/tr0y.pnzzzzz/" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i> Instagram</a>
+  <a class="link" href="https://github.com/Troy-beepbeep" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
+  <a class="link" href="https://www.youtube.com/@idki303" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i> YouTube</a>
+  <a class="link" href="mailto:troymarceloj@gmail.com"><i class="fas fa-paper-plane"></i> Email</a>
 </div>
 
-<div class="container">
-    <img src="https://i.pravatar.cc/300" class="profile-img">
-    <h1>@tr0y.pnzzzzz</h1>
-    <p class="bio"><span id="typing"></span></p>
+<div class="footer">© 2026 Personal Link</div>
 
-    <div class="links">
-        <a href="https://www.instagram.com/tr0y.pnzzzzz/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-        <a href="https://github.com/Troy-beepbeep" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-        <a href="https://www.youtube.com/@idki303" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
-        <a href="mailto:troymarceloj@gmail.com"><i class="fas fa-envelope"></i> Email</a>
-    </div>
+  </div>  <!-- PORTFOLIO MODAL -->  <div class="modal" id="portfolioModal" aria-hidden="true">
+    <div class="modal-backdrop" id="backdrop"></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="portfolioTitle">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h2 id="portfolioTitle">Portfolio — Projects</h2>
+        <div>
+          <button class="btn" id="closeModal"><i class="fas fa-times"></i></button>
+        </div>
+      </div><div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn" data-filter="all">All</button>
+    <button class="btn" data-filter="web">Web</button>
+    <button class="btn" data-filter="mobile">Mobile</button>
+    <button class="btn" data-filter="game">Game</button>
+  </div>
 
-    <div class="footer">
-        © 2026 Personal Link
-    </div>
+  <div class="projects-grid" id="projectsGrid">
+    <!-- JS will populate projects here -->
+  </div>
+
 </div>
 
-<script>
-/* DARK LIGHT TOGGLE */
-if(localStorage.getItem("mode") === "light"){
-    document.body.classList.remove("dark");
-    document.body.classList.add("light");
-}
-    
-function toggleMode(){
-    const body = document.body;
-    const icon = document.querySelector(".toggle-btn i");
+  </div>  <script>
+    /* THEMING + PREF */
+    (function(){
+      // read saved mode (dark/light) - keep dark default
+      const saved = localStorage.getItem('mode');
+      if(saved === 'light') document.body.style.background = 'linear-gradient(135deg,#e0eafc,#cfdef3)';
+    })();
 
-    body.classList.toggle("dark");
-    body.classList.toggle("light");
+    /* PARTICLES - lightweight */
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = innerWidth;
+    let h = canvas.height = innerHeight;
 
-     if(body.classList.contains("light")){
-        localStorage.setItem("mode","light");
-        icon.classList.remove("fa-moon");
-        icon.classList.add("fa-sun");
-    } else {
-        localStorage.setItem("mode","dark");
-        icon.classList.remove("fa-sun");
-        icon.classList.add("fa-moon");
+    // fewer particles on small screens
+    const baseCount = Math.max(30, Math.floor((w*h)/60000));
+    let particles = Array.from({length:baseCount},()=>({
+      x:Math.random()*w, y:Math.random()*h,
+      r:Math.random()*1.6+0.3,
+      vx:(Math.random()-0.5)/1.2, vy:(Math.random()-0.5)/1.2
+    }));
+
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      particles.forEach(p=>{
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle='rgba(0,245,255,0.08)'; ctx.fill();
+        p.x += p.vx; p.y += p.vy;
+        if(p.x<0||p.x>w) p.vx *= -1;
+        if(p.y<0||p.y>h) p.vy *= -1;
+      });
+      requestAnimationFrame(draw);
     }
-}
+    draw();
+    addEventListener('resize',()=>{w=canvas.width=innerWidth;h=canvas.height=innerHeight});
 
-
-/* SIMPLE PARTICLE SYSTEM */
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let particles = [];
-
-for(let i=0;i<80;i++){
-    particles.push({
-        x:Math.random()*canvas.width,
-        y:Math.random()*canvas.height,
-        radius:Math.random()*2,
-        dx:(Math.random()-0.5),
-        dy:(Math.random()-0.5)
-    });
-}
-
-function animate(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    particles.forEach(p=>{
-        ctx.beginPath();
-        ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
-        ctx.fillStyle="rgba(0,255,255,0.7)";
-        ctx.fill();
-
-        p.x+=p.dx;
-        p.y+=p.dy;
-
-        if(p.x<0||p.x>canvas.width) p.dx*=-1;
-        if(p.y<0||p.y>canvas.height) p.dy*=-1;
-    });
-
-    requestAnimationFrame(animate);
-}
-
-animate();
-
-window.addEventListener("resize",()=>{
-    canvas.width=window.innerWidth;
-    canvas.height=window.innerHeight;
-});
-
-/* SCRIPT JS */
-    const text = "RPL Student | Real Madrid Fan | Cyberpunk Vibes ⚡";
-let i = 0;
-
-function typeEffect(){
-    if(i < text.length){
-        document.getElementById("typing").innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeEffect,50);
+    /* TYPING EFFECT (simple loop) */
+    const typingEl = document.getElementById('typing');
+    const texts = ["RPL Student","Real Madrid Fan","Cyberpunk Vibes ⚡","Web & Mobile Dev"];
+    let tIdx=0, ch=0, dir=1;
+    function tick(){
+      const full = texts[tIdx];
+      typingEl.textContent = full.slice(0,ch);
+      ch+=dir;
+      if(ch>full.length){dir=-1; setTimeout(tick,900); return}
+      if(ch<0){dir=1; tIdx=(tIdx+1)%texts.length}
+      setTimeout(tick,60);
     }
-}
+    tick();
 
-typeEffect();
-</script>
+    /* COPY EMAIL */
+    document.getElementById('copyEmail').addEventListener('click',async ()=>{
+      try{
+        await navigator.clipboard.writeText('troymarceloj@gmail.com');
+        alert('Email copied 👍');
+      }catch(e){
+        prompt('Copy email manually:', 'troymarceloj@gmail.com');
+      }
+    });
 
-</body>
+    /* PORTFOLIO DATA (edit this array to add your projects) */
+    const projects = [
+      {id:1,title:'My Portfolio Site',desc:'Link page + portfolio',tags:['web','html','css'],img:'https://picsum.photos/seed/p1/600/400',github:'https://github.com/Troy-beepbeep'},
+      {id:2,title:'Mobile Game Prototype',desc:'Simple rhythm mobile game',tags:['game','mobile'],img:'https://picsum.photos/seed/p2/600/400',github:'#'},
+      {id:3,title:'RPL Project - ChatApp',desc:'Realtime chat app for school',tags:['web','mobile'],img:'https://picsum.photos/seed/p3/600/400',github:'#'}
+    ];
+
+    const projectsGrid = document.getElementById('projectsGrid');
+    function renderProjects(filter='all'){
+      projectsGrid.innerHTML = '';
+      const list = projects.filter(p=> filter==='all' || p.tags.includes(filter));
+      list.forEach(p=>{
+        const el = document.createElement('article'); el.className='project';
+        el.innerHTML = `
+          <img src="${p.img}" alt="${p.title}">
+          <h3>${p.title}</h3>
+          <p>${p.desc}</p>
+          <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+          <div class="project-actions">
+            <a class="btn" href="${p.github}" target="_blank" rel="noopener"> <i class="fab fa-github"></i> Source</a>
+            <button class="btn" onclick="alert('Demo not set for ${p.title}')">Demo</button>
+          </div>`;
+        projectsGrid.appendChild(el);
+      });
+    }
+
+    // modal controls
+    const modal = document.getElementById('portfolioModal');
+    document.getElementById('openPortfolio').addEventListener('click',()=>{modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); renderProjects('all');});
+    document.getElementById('closeModal').addEventListener('click',()=>{modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');});
+    document.getElementById('backdrop').addEventListener('click',()=>{modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');});
+
+    // filter buttons
+    document.querySelectorAll('[data-filter]').forEach(btn=> btn.addEventListener('click',e=>{
+      const f = e.currentTarget.getAttribute('data-filter'); renderProjects(f);
+    }));
+
+    // keyboard escape to close modal
+    document.addEventListener('keydown',e=>{ if(e.key === 'Escape'){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); } });
+  </script></body>
 </html>
